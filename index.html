@@ -113,18 +113,24 @@
                             <i class="material-icons medium deep-purple-text">mic</i></p>Hablar en publico es lo más importante, por ello perfeccionarlo no es algo trivial, mantener la atención del publico y que no se duerman es algo importante aprender. </p>
                         </div>
                     </div>
-                        <div class="col s12 m4">
-                            <div class="card-panel">
-                                <h4 class="card-title deep-purple-text" style="text-align: center "><br>ESTRELLAS:</h4></p>
-                                    <h6></h6> <class="deep-purple-text">
-                                        Esta web tiene
-                                        <span id="star">0</span>
-                                        ☆
-                                    </h6>
-                            </div>
+                    <div class="col s12 m4">
+                      <div class="card-panel">
+                          <h4 id="starRating" class="deep-purple-text">
+                          </h4>
                         </div>
-                     </div>
+                  </div>
       </div>
+        		<!-- Section: Stars -->
+  		<section class="section main-color center">
+  			<div class="container">
+  				<div class="row">
+  					<div class="col s12">
+  						<h4 id="starRating" class="white-text">
+  						</h4>
+  					</div>
+  				</div>
+  			</div>
+  		</section>
   </section>
   <div class="fixed-action-btn">
   	<a href="#" class="btn-floating btn-large back-to-top color-accent">
@@ -162,6 +168,47 @@
         // ScrollSpy
         const ss = document.querySelectorAll('.scrollspy');
         M.ScrollSpy.init(ss, {});
+      </script>
+      <!--Get stars from github repository-->
+      <script>
+        /*$.getJSON('https://api.github.com/repos/Kalisaria/Kalisaria.github.io', function(data) {
+   
+          var text = `Estrellas en repositorio de GitHub: ${data.stargazers_count}`
+          text = text.concat(" <i class=\"fas fa-star\"></i>");
+          $(".starRating").html(text);
+        });*/
+        document.addEventListener("DOMContentLoaded", function(){
+          getStars();
+        });
+   
+        function getStars(){
+          loadJSON('https://api.github.com/repos/Kalisaria/Kalisaria.github.io',
+            function(data) { console.log(data); },
+            function(xhr) { console.error(xhr); }
+            );
+        }
+   
+        function loadJSON(path, success, error)
+        {
+          var xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function()
+          {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                if (success){
+                  var myParsed =JSON.parse(xhr.responseText);
+                  console.log(myParsed.stargazers_count);
+                  document.getElementById("starRating").innerHTML= "Estrellas en repositorio de GitHub: "+ myParsed.stargazers_count + " <i class=\"fas fa-star\"></i>";
+                }
+              } else {
+                if (error)
+                  error(xhr);
+              }
+            }
+          };
+          xhr.open("GET", path, true);
+          xhr.send();
+        }
       </script>
 </body>
 </html>
